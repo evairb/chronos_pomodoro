@@ -1,18 +1,23 @@
 import './style/theme.css';
 import './style/global.css';
 import { Container } from './components/Container';
-import { Heading } from './components/Heading';
+import { Menu } from './components/Menu';
+import { Logo } from './components/Logo';
+import { CountDown } from './components/CounDown';
 
 export function App() {
   return (
     <>
       <Container>
-        <Heading>Testando</Heading>
-        <section>LOGO</section>
+        <Logo />
       </Container>
 
       <Container>
-        <section>MENU</section>
+        <Menu />
+      </Container>
+
+      <Container>
+        <CountDown />
       </Container>
     </>
   );
