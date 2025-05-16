@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import { inicialTaskState } from './initialTaskState';
 import { TaskContext } from './TaskContext';
 
@@ -8,9 +8,55 @@ type TaskContextProviderProps = {
 export function TaskContextProvider({ children }: TaskContextProviderProps) {
   const [state, setState] = useState(inicialTaskState);
 
+  type ActionType = {
+    type: string;
+    payload?: number;
+  };
+
+  const [myState, dispatch] = useReducer(
+    (state, action: ActionType) => {
+      console.log(state, action);
+      switch (action.type) {
+        case 'INCREMENT': {
+          if (!action.payload) return state;
+
+          return {
+            ...state,
+            secondsRemaing: state.secondsRemaing + action.payload,
+          };
+        }
+        case 'DECREMENT': {
+          if (!action.payload) return state;
+
+          return {
+            ...state,
+            secondsRemaing: state.secondsRemaing - action.payload,
+          };
+        }
+      }
+      return state;
+    },
+    {
+      secondsRemaing: 0,
+    },
+  );
+
+  // useEffect(() => {
+  //   console.log(state);
+  // }, [state]);
+
   return (
     <TaskContext.Provider value={{ state, setState }}>
-      {children}
+      <h1>O estado e: {JSON.stringify(myState)}</h1>
+      <button onClick={() => dispatch({ type: 'INCREMENT', payload: 10 })}>
+        Incrementar +10
+      </button>
+      <button onClick={() => dispatch({ type: 'INCREMENT', payload: 20 })}>
+        Incrementar +20
+      </button>
+      <button onClick={() => dispatch({ type: 'DECREMENT', payload: 20 })}>
+        Incrementar -20
+      </button>
     </TaskContext.Provider>
   );
 }
